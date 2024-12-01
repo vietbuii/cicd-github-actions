@@ -15,6 +15,11 @@ public class GithubCicdActionsApplication {
 		return "Welcome to Zit!!";
 	}
 
+	@GetMapping("/goodbye")
+	public String goodbye() {
+		return "See you again Zit!!";
+	}
+
 //	echo "# cicd-github-actions" >> README.md
 //	git init
 //	git add README.md
