@@ -21,7 +21,7 @@ public class GithubCicdActionsApplication {
 	}
 
 	@GetMapping("/index")
-	public String home() {return "index";}
+	public String index() {return "index";}
 
 //	echo "# cicd-github-actions" >> README.md
 //	git init
