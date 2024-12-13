@@ -20,9 +20,6 @@ public class GithubCicdActionsApplication {
 		return "See you again Zit!!";
 	}
 
-	@GetMapping("/index")
-	public String index() {return "index";}
-
 //	echo "# cicd-github-actions" >> README.md
 //	git init
 //	git add README.md
