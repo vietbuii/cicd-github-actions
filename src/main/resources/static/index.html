@@ -4,9 +4,80 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trang web của tôi</title>
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f7fc;
+            color: #333;
+            line-height: 1.6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+        }
+
+        .container {
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            width: 80%;
+            max-width: 600px;
+            margin: 20px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: #4CAF50;
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 1.2rem;
+            color: #555;
+            margin-bottom: 30px;
+        }
+
+        .footer {
+            margin-top: 30px;
+            font-size: 0.9rem;
+            color: #888;
+        }
+
+        /* Styling the button */
+        .btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #45a049;
+        }
+
+    </style>
 </head>
 <body>
-<h1>Chào mừng đến với trang web của tôi!</h1>
-<p>Đây là một đoạn văn bản bằng tiếng Việt.</p>
+<div class="container">
+    <h1>Chào mừng đến với trang web của tôi!</h1>
+    <p>Đây là một đoạn văn bản bằng tiếng Việt, được thiết kế để hiển thị một trang web chuyên nghiệp hơn.</p>
+    <button class="btn" onclick="alert('Cảm ơn bạn đã truy cập!')">Bấm vào đây</button>
+    <div class="footer">
+        <p>&copy; 2024 Trang web của tôi. Tất cả quyền được bảo vệ.</p>
+    </div>
+</div>
 </body>
 </html>
