@@ -62,7 +62,7 @@
             100% { transform: translateX(0); }
         }
 
-        .container {
+        .container, .reminder-list-container {
             background-color: rgba(255, 255, 255, 0.1);
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -70,7 +70,6 @@
             width: 80%;
             max-width: 600px;
             backdrop-filter: blur(10px);
-            transition: all 0.3s ease;
         }
 
         h1 {
@@ -136,13 +135,6 @@
             transform: scale(1.05);
         }
 
-        .footer {
-            margin-top: 30px;
-            font-size: 0.9rem;
-            color: #bbb;
-            position: absolute;
-            bottom: 10px;
-        }
 
         .reminder-list {
             margin-top: 20px;
@@ -171,6 +163,7 @@
 <div class="stars"></div>
 <div class="moon"></div>
 
+<!-- Main Container -->
 <div class="container" id="container">
     <h1>Ghi chú và Hẹn giờ làm việc</h1>
     <p>Viết ghi chú của bạn và đặt thời gian để nhận nhắc nhở.</p>
@@ -186,17 +179,18 @@
     <!-- Button to set the reminder -->
     <button class="btn" onclick="setReminder()">Đặt nhắc nhở</button>
 
-    <!-- Reminder List Section -->
-    <div id="reminder-list-section" style="display: none;">
-        <h2>Danh sách nhắc nhở:</h2>
-        <ul id="reminder-list" class="reminder-list">
-            <!-- List of reminders will appear here -->
-        </ul>
-    </div>
+    <!-- View reminders button -->
+    <button class="btn" onclick="viewReminders()">Xem danh sách ghi chú</button>
 
-    <div class="footer">
-        <p>&copy; 2024 Trang web của tôi. Tất cả quyền được bảo vệ.</p>
-    </div>
+</div>
+
+<!-- Reminder List Section -->
+<div class="reminder-list-container" id="reminder-list-container" style="display: none;">
+    <h2>Danh sách nhắc nhở:</h2>
+    <ul id="reminder-list" class="reminder-list">
+        <!-- List of reminders will appear here -->
+    </ul>
+    <button class="btn" onclick="returnToMainPage()">Quay lại</button>
 </div>
 
 <script>
@@ -240,9 +234,7 @@
             alert("Đến giờ rồi! Đây là nhắc nhở của bạn: " + note);
         }, timeDifference);
 
-        // Show the reminder list section and hide the form
-        document.getElementById("reminder-list-section").style.display = "block";
-        document.getElementById("container").style.display = "none";
+        alert("Nhắc nhở đã được đặt cho thời gian: " + new Date(reminderDate).toLocaleString());
     }
 
     // Function to display the list of reminders
@@ -261,6 +253,18 @@
 
             listElement.appendChild(listItem);
         });
+    }
+
+    // Function to view the reminder list
+    function viewReminders() {
+        document.getElementById("container").style.display = "none";
+        document.getElementById("reminder-list-container").style.display = "block";
+    }
+
+    // Function to return to the main page
+    function returnToMainPage() {
+        document.getElementById("container").style.display = "block";
+        document.getElementById("reminder-list-container").style.display = "none";
     }
 </script>
 </body>
