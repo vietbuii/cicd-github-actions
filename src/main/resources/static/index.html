@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trang web của tôi</title>
+    <title>Trang web của tôi - Ghi chú và Hẹn giờ</title>
     <style>
         /* General Reset */
         * {
@@ -43,16 +43,36 @@
         p {
             font-size: 1.2rem;
             color: #555;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
         }
 
-        .footer {
-            margin-top: 30px;
-            font-size: 0.9rem;
-            color: #888;
+        label {
+            font-size: 1rem;
+            display: block;
+            margin-bottom: 5px;
+            text-align: left;
         }
 
-        /* Styling the button */
+        textarea {
+            width: 100%;
+            height: 150px;
+            padding: 10px;
+            font-size: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            resize: none;
+        }
+
+        .time-picker {
+            font-size: 1rem;
+            padding: 10px;
+            margin-bottom: 20px;
+            width: 100%;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
         .btn {
             background-color: #4CAF50;
             color: white;
@@ -68,16 +88,66 @@
             background-color: #45a049;
         }
 
+        .footer {
+            margin-top: 30px;
+            font-size: 0.9rem;
+            color: #888;
+        }
+
     </style>
 </head>
 <body>
 <div class="container">
-    <h1>Chào mừng đến với trang web của tôi!</h1>
-    <p>Đây là một đoạn văn bản bằng tiếng Việt, được thiết kế để hiển thị một trang web chuyên nghiệp hơn.</p>
-    <button class="btn" onclick="alert('Cảm ơn bạn đã truy cập!')">Bấm vào đây</button>
+    <h1>Ghi chú và Hẹn giờ làm việc</h1>
+    <p>Viết ghi chú của bạn và đặt thời gian để nhận nhắc nhở.</p>
+
+    <!-- Notes Section with Label -->
+    <label for="note">Ghi chú công việc của bạn:</label>
+    <textarea id="note" placeholder="Ghi chú công việc của bạn ở đây..."></textarea>
+
+    <!-- Time Picker with Label -->
+    <label for="reminder-time">Chọn thời gian nhắc nhở:</label>
+    <input type="datetime-local" id="reminder-time" class="time-picker" />
+
+    <!-- Button to set the reminder -->
+    <button class="btn" onclick="setReminder()">Đặt nhắc nhở</button>
+
     <div class="footer">
         <p>&copy; 2024 Trang web của tôi. Tất cả quyền được bảo vệ.</p>
     </div>
 </div>
+
+<script>
+    // Function to set reminder
+    function setReminder() {
+        const note = document.getElementById("note").value;
+        const reminderTime = document.getElementById("reminder-time").value;
+
+        if (!note || !reminderTime) {
+            alert("Vui lòng nhập ghi chú và chọn thời gian nhắc nhở!");
+            return;
+        }
+
+        // Convert reminder time to milliseconds
+        const reminderDate = new Date(reminderTime).getTime();
+        const currentTime = new Date().getTime();
+
+        // Check if the selected time is in the future
+        if (reminderDate <= currentTime) {
+            alert("Vui lòng chọn một thời gian trong tương lai.");
+            return;
+        }
+
+        // Calculate the time difference in milliseconds
+        const timeDifference = reminderDate - currentTime;
+
+        // Set timeout to show reminder alert at the selected time
+        setTimeout(() => {
+            alert("Đến giờ rồi! Đây là nhắc nhở của bạn: " + note);
+        }, timeDifference);
+
+        alert("Nhắc nhở đã được đặt cho thời gian: " + new Date(reminderDate).toLocaleString());
+    }
+</script>
 </body>
 </html>
