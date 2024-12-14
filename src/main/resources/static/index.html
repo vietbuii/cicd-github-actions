@@ -15,7 +15,7 @@
         /* Background bầu trời đêm */
         body {
             font-family: 'Roboto', sans-serif;
-            background: #1a1a1d;
+            background: #1a1a1d url('https://www.transparenttextures.com/patterns/black-linen-embossed.png') center/cover;
             color: #fff;
             line-height: 1.6;
             display: flex;
@@ -26,8 +26,6 @@
             flex-direction: column;
             overflow: hidden;
             position: relative;
-            background-image: url('https://www.transparenttextures.com/patterns/black-linen-embossed.png');
-            background-size: cover;
             animation: moveStars 40s linear infinite;
         }
 
@@ -283,6 +281,7 @@
             listItem.classList.add("reminder-item");
 
             listItem.innerHTML = `
+
                 <strong>Ghi chú:</strong> ${reminder.note} <br>
                 <strong>Thời gian nhắc nhở:</strong> ${reminder.reminderTime}
                 <button class="btn edit-btn" onclick="editReminder(${index})">Sửa</button>
