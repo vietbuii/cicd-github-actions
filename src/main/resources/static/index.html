@@ -22,6 +22,7 @@
             align-items: center;
             height: 100vh;
             text-align: center;
+            flex-direction: column;
         }
 
         .container {
@@ -94,6 +95,23 @@
             color: #888;
         }
 
+        .reminder-list {
+            margin-top: 20px;
+            font-size: 1rem;
+            color: #333;
+            text-align: left;
+            list-style-type: none;
+            padding: 0;
+        }
+
+         {
+            background-color: #f9f9f9;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
     </style>
 </head>
 <body>
@@ -112,12 +130,20 @@
     <!-- Button to set the reminder -->
     <button class="btn" onclick="setReminder()">Đặt nhắc nhở</button>
 
+    <!-- Reminder List Section -->
+    <h2>Danh sách nhắc nhở:</h2>
+    <ul id="reminder-list" class="reminder-list">
+        <!-- List of reminders will appear here -->
+    </ul>
+
     <div class="footer">
         <p>&copy; 2024 Trang web của tôi. Tất cả quyền được bảo vệ.</p>
     </div>
 </div>
 
 <script>
+    const reminderList = []; // Array to store reminders
+
     // Function to set reminder
     function setReminder() {
         const note = document.getElementById("note").value;
@@ -141,12 +167,40 @@
         // Calculate the time difference in milliseconds
         const timeDifference = reminderDate - currentTime;
 
+        // Save the reminder in the array
+        reminderList.push({
+            note: note,
+            reminderTime: new Date(reminderDate).toLocaleString(),
+            timeDifference: timeDifference
+        });
+
+        // Display the reminder in the list
+        displayReminderList();
+
         // Set timeout to show reminder alert at the selected time
         setTimeout(() => {
             alert("Đến giờ rồi! Đây là nhắc nhở của bạn: " + note);
         }, timeDifference);
 
         alert("Nhắc nhở đã được đặt cho thời gian: " + new Date(reminderDate).toLocaleString());
+    }
+
+    // Function to display the list of reminders
+    function displayReminderList() {
+        const listElement = document.getElementById("reminder-list");
+        listElement.innerHTML = ''; // Clear current list
+
+        reminderList.forEach((reminder) => {
+            const listItem = document.createElement("li");
+            listItem.classList.add("reminder-item");
+
+            listItem.innerHTML = `
+                <strong>Ghi chú:</strong> ${reminder.note} <br>
+                <strong>Thời gian nhắc nhở:</strong> ${reminder.reminderTime}
+            `;
+
+            listElement.appendChild(listItem);
+        });
     }
 </script>
 </body>
