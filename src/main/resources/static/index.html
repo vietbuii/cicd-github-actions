@@ -6,7 +6,6 @@
     <title>Trang web của tôi - Ghi chú và Hẹn giờ</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Quicksand:wght@300;400&display=swap" rel="stylesheet">
     <style>
-        /* General Reset */
         * {
             margin: 0;
             padding: 0;
@@ -28,41 +27,7 @@
             position: relative;
         }
 
-        /* Background Night Sky Animation */
-        .stars {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: url('https://www.transparenttextures.com/patterns/stardust.png');
-            animation: twinkle 2s infinite;
-            z-index: -1;
-        }
-
-        @keyframes twinkle {
-            0% { opacity: 0.7; }
-            50% { opacity: 1; }
-            100% { opacity: 0.7; }
-        }
-
-        .moon {
-            position: absolute;
-            top: 10%;
-            right: 10%;
-            width: 100px;
-            height: 100px;
-            background: #fff;
-            border-radius: 50%;
-            box-shadow: 0 0 50px rgba(255, 255, 255, 0.5);
-            animation: moveMoon 10s linear infinite;
-        }
-
-        @keyframes moveMoon {
-            0% { transform: translateX(0); }
-            50% { transform: translateX(-200px); }
-            100% { transform: translateX(0); }
-        }
-
-        .container, .reminder-list-container {
+        .container {
             background-color: rgba(255, 255, 255, 0.1);
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -78,12 +43,6 @@
             color: #ffcc00;
             margin-bottom: 20px;
             text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.4);
-        }
-
-        p {
-            font-size: 1.2rem;
-            color: #ddd;
-            margin-bottom: 20px;
         }
 
         label {
@@ -135,14 +94,6 @@
             transform: scale(1.05);
         }
 
-        .footer {
-            margin-top: 30px;
-            font-size: 0.9rem;
-            color: #bbb;
-            position: absolute;
-            bottom: 10px;
-        }
-
         .reminder-list {
             margin-top: 20px;
             font-size: 1.1rem;
@@ -160,41 +111,43 @@
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
         }
 
-        .reminder-item strong {
-            color: #ffcc00;
+        .reminder-item button {
+            background-color: #ff4d4d;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .reminder-item button:hover {
+            background-color: #ff1a1a;
+        }
+
+        .edit-btn {
+            background-color: #4caf50;
+            margin-left: 10px;
+        }
+
+        .edit-btn:hover {
+            background-color: #45a049;
         }
     </style>
 </head>
 <body>
-<!-- Background Elements -->
-<div class="stars"></div>
-<div class="moon"></div>
 
-<!-- Main Container -->
 <div class="container" id="container">
     <h1>Ghi chú và Hẹn giờ làm việc</h1>
-    <p>Viết ghi chú của bạn và đặt thời gian để nhận nhắc nhở.</p>
-
-    <!-- Notes Section with Label -->
     <label for="note">Ghi chú công việc của bạn:</label>
     <textarea id="note" placeholder="Ghi chú công việc của bạn ở đây..."></textarea>
 
-    <!-- Time Picker with Label -->
     <label for="reminder-time">Chọn thời gian nhắc nhở:</label>
     <input type="datetime-local" id="reminder-time" class="time-picker" />
 
-    <!-- Button to set the reminder -->
     <button class="btn" onclick="setReminder()">Đặt nhắc nhở</button>
-
-    <!-- View reminders button -->
     <button class="btn" onclick="viewReminders()">Xem danh sách ghi chú</button>
-
-    <div class="footer">
-        <p>&copy; 2024 Trang web của tôi. Tất cả quyền được bảo vệ.</p>
-    </div>
 </div>
 
-<!-- Reminder List Section -->
 <div class="reminder-list-container" id="reminder-list-container" style="display: none;">
     <h2>Danh sách nhắc nhở:</h2>
     <ul id="reminder-list" class="reminder-list">
@@ -205,6 +158,7 @@
 
 <script>
     const reminderList = []; // Array to store reminders
+    let editIndex = -1; // To keep track of the reminder being edited
 
     // Function to set reminder
     function setReminder() {
@@ -229,12 +183,22 @@
         // Calculate the time difference in milliseconds
         const timeDifference = reminderDate - currentTime;
 
-        // Save the reminder in the array
-        reminderList.push({
-            note: note,
-            reminderTime: new Date(reminderDate).toLocaleString(),
-            timeDifference: timeDifference
-        });
+        if (editIndex === -1) {
+            // Save the reminder in the array if we are adding new reminder
+            reminderList.push({
+                note: note,
+                reminderTime: new Date(reminderDate).toLocaleString(),
+                timeDifference: timeDifference
+            });
+        } else {
+            // Update the reminder if we are editing an existing one
+            reminderList[editIndex] = {
+                note: note,
+                reminderTime: new Date(reminderDate).toLocaleString(),
+                timeDifference: timeDifference
+            };
+            editIndex = -1; // Reset the edit index after saving
+        }
 
         // Display the reminder in the list
         displayReminderList();
@@ -252,23 +216,35 @@
         const listElement = document.getElementById("reminder-list");
         listElement.innerHTML = ''; // Clear current list
 
-        reminderList.forEach((reminder) => {
+        reminderList.forEach((reminder, index) => {
             const listItem = document.createElement("li");
             listItem.classList.add("reminder-item");
 
             listItem.innerHTML = `
                 <strong>Ghi chú:</strong> ${reminder.note} <br>
                 <strong>Thời gian nhắc nhở:</strong> ${reminder.reminderTime}
+                <button class="btn edit-btn" onclick="editReminder(${index})">Sửa</button>
+                <button class="btn" onclick="deleteReminder(${index})">Xóa</button>
             `;
 
             listElement.appendChild(listItem);
         });
     }
 
-    // Function to view the reminder list
-    function viewReminders() {
-        document.getElementById("container").style.display = "none";
-        document.getElementById("reminder-list-container").style.display = "block";
+    // Function to edit reminder
+    function editReminder(index) {
+        const reminder = reminderList[index];
+        document.getElementById("note").value = reminder.note;
+        document.getElementById("reminder-time").value = new Date(reminder.reminderTime).toISOString().slice(0, 16);
+        editIndex = index; // Set the edit index to update this reminder
+        document.getElementById("container").style.display = "block";
+        document.getElementById("reminder-list-container").style.display = "none";
+    }
+
+    // Function to delete reminder
+    function deleteReminder(index) {
+        reminderList.splice(index, 1); // Remove the reminder from the array
+        displayReminderList(); // Re-render the list
     }
 
     // Function to return to the main page
@@ -276,6 +252,14 @@
         document.getElementById("container").style.display = "block";
         document.getElementById("reminder-list-container").style.display = "none";
     }
+
+    // Function to view all reminders
+    function viewReminders() {
+        document.getElementById("container").style.display = "none";
+        document.getElementById("reminder-list-container").style.display = "block";
+        displayReminderList();
+    }
 </script>
+
 </body>
 </html>
