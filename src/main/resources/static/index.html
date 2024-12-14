@@ -12,6 +12,7 @@
             box-sizing: border-box;
         }
 
+        /* Background bầu trời đêm */
         body {
             font-family: 'Roboto', sans-serif;
             background: #1a1a1d;
@@ -25,6 +26,62 @@
             flex-direction: column;
             overflow: hidden;
             position: relative;
+            background-image: url('https://www.transparenttextures.com/patterns/black-linen-embossed.png');
+            background-size: cover;
+            animation: moveStars 40s linear infinite;
+        }
+
+        /* Bầu trời với sao và trăng */
+        .stars {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://cdn.pixabay.com/photo/2016/11/29/09/13/stars-1867849_960_720.jpg') repeat;
+            opacity: 0.2;
+            z-index: -1;
+            animation: starMovement 150s linear infinite;
+        }
+
+        .moon {
+            position: absolute;
+            top: 10%;
+            left: 80%;
+            width: 150px;
+            height: 150px;
+            background: url('https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/Moon.svg/1024px-Moon.svg.png') no-repeat center;
+            background-size: contain;
+            animation: moveMoon 40s linear infinite;
+        }
+
+        @keyframes starMovement {
+            0% {
+                background-position: 0 0;
+            }
+            100% {
+                background-position: 5000px 5000px;
+            }
+        }
+
+        @keyframes moveStars {
+            0% {
+                background-position: 0 0;
+            }
+            100% {
+                background-position: -5000px -5000px;
+            }
+        }
+
+        @keyframes moveMoon {
+            0% {
+                top: 10%;
+                left: 80%;
+            }
+            100% {
+                top: 60%;
+                left: 20%;
+            }
         }
 
         .container {
@@ -35,6 +92,7 @@
             width: 80%;
             max-width: 600px;
             backdrop-filter: blur(10px);
+            z-index: 1;
         }
 
         h1 {
@@ -135,6 +193,10 @@
     </style>
 </head>
 <body>
+
+<!-- Background elements -->
+<div class="stars"></div>
+<div class="moon"></div>
 
 <div class="container" id="container">
     <h1>Ghi chú và Hẹn giờ làm việc</h1>
