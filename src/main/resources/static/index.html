@@ -15,7 +15,6 @@
         /* Background bầu trời đêm */
         body {
             font-family: 'Roboto', sans-serif;
-            background: #1a1a1d url('https://www.transparenttextures.com/patterns/black-linen-embossed.png') center/cover;
             color: #fff;
             line-height: 1.6;
             display: flex;
@@ -27,9 +26,10 @@
             overflow: hidden;
             position: relative;
             animation: moveStars 40s linear infinite;
+            background: #000 url('https://www.transparenttextures.com/patterns/black-linen-embossed.png') center/cover no-repeat;
         }
 
-        /* Bầu trời với sao và trăng */
+        /* Bầu trời với sao */
         .stars {
             position: absolute;
             top: 0;
@@ -82,6 +82,7 @@
             }
         }
 
+        /* Đặt container cho nội dung */
         .container {
             background-color: rgba(255, 255, 255, 0.1);
             border-radius: 8px;
@@ -158,7 +159,6 @@
             list-style-type: none;
             padding: 0;
         }
-
 
         .reminder-item button {
             background-color: #ff4d4d;
