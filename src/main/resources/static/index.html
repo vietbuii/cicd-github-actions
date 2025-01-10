@@ -148,6 +148,12 @@
         .reminder-item strong {
             color: #ffcc00;
         }
+
+        .logout-btn {
+            margin-top: 20px;
+            background-color: #ff6666;
+            color: #fff;
+        }
     </style>
 </head>
 <body>
@@ -166,6 +172,7 @@
 
     <button class="btn" onclick="setReminder()">Đặt nhắc nhở</button>
     <button class="btn" onclick="viewReminders()">Xem danh sách ghi chú</button>
+    <button class="btn logout-btn" onclick="logout()">Đăng xuất</button> <!-- Nút đăng xuất -->
 </div>
 
 <div class="reminder-list-container" id="reminder-list-container" style="display: none;">
@@ -282,11 +289,10 @@
         document.getElementById("reminder-list-container").style.display = "none";
     }
 
-    // Function to view all reminders
-    function viewReminders() {
-        document.getElementById("container").style.display = "none";
-        document.getElementById("reminder-list-container").style.display = "block";
-        displayReminderList();
+    // Function to log out the user
+    function logout() {
+        sessionStorage.removeItem('currentUser'); // Remove the current user session
+        window.location.href = 'login.html'; // Redirect to the login page
     }
 </script>
 
