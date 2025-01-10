@@ -194,9 +194,13 @@
     const reminderList = []; // Array to store reminders
     let editIndex = -1; // To keep track of the reminder being edited
 
-    // Kiểm tra trạng thái đăng nhập
-    if (!sessionStorage.getItem('currentUser')) {
-        window.location.href = 'login.html';
+    // Tải danh sách ghi chú từ localStorage khi trang được tải lại
+    window.onload = function() {
+        const savedReminders = localStorage.getItem('reminderList');
+        if (savedReminders) {
+            reminderList.push(...JSON.parse(savedReminders)); // Khôi phục từ localStorage
+            displayReminderList(); // Hiển thị lại danh sách ghi chú
+        }
     }
 
     // Function to set reminder
@@ -233,6 +237,9 @@
             };
             editIndex = -1;
         }
+
+        // Lưu danh sách vào localStorage
+        localStorage.setItem('reminderList', JSON.stringify(reminderList));
 
         displayReminderList();
 
@@ -281,6 +288,8 @@
 
     function deleteReminder(index) {
         reminderList.splice(index, 1);
+        // Lưu danh sách đã thay đổi vào localStorage
+        localStorage.setItem('reminderList', JSON.stringify(reminderList));
         displayReminderList();
     }
 
