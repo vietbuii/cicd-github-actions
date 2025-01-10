@@ -180,6 +180,12 @@
     const reminderList = []; // Array to store reminders
     let editIndex = -1; // To keep track of the reminder being edited
 
+    // Kiểm tra trạng thái đăng nhập
+    if (!sessionStorage.getItem('currentUser')) {
+        // Nếu người dùng chưa đăng nhập, chuyển hướng về trang login.html
+        window.location.href = 'login.html';
+    }
+
     // Function to set reminder
     function setReminder() {
         const note = document.getElementById("note").value;
@@ -245,9 +251,9 @@
                 <strong>Ghi chú:</strong> ${reminder.note} <br>
                 <strong>Thời gian nhắc nhở:</strong> ${reminder.reminderTime}
 
-                <button class="btn edit-btn" onclick="editReminder(${index})">Sửa</button>
+                <button class="btn edit-btn" onclick="editReminder(${index})">Sửa✏️</button>
 
-                <button class="btn" onclick="deleteReminder(${index})">Xóa</button>
+                <button class="btn" onclick="deleteReminder(${index})">Xóa🗑️</button>
             `;
 
             listElement.appendChild(listItem);
