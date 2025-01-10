@@ -79,6 +79,9 @@
             color: #ffcc00;
             margin-bottom: 20px;
             text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.4);
+            white-space: nowrap; /* Prevent line break */
+            overflow: hidden; /* Prevent text overflow */
+            text-overflow: ellipsis; /* Add ellipsis if text overflows */
         }
 
         p {
@@ -154,6 +157,10 @@
             background-color: #ff6666;
             color: #fff;
         }
+
+        .reminder-list-container {
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -172,10 +179,10 @@
 
     <button class="btn" onclick="setReminder()">Đặt nhắc nhở</button>
     <button class="btn" onclick="viewReminders()">Xem danh sách ghi chú</button>
-    <button class="btn logout-btn" onclick="logout()">Đăng xuất</button> <!-- Nút đăng xuất -->
+    <button class="btn logout-btn" onclick="logout()">Đăng xuất</button>
 </div>
 
-<div class="reminder-list-container" id="reminder-list-container" style="display: none;">
+<div class="reminder-list-container" id="reminder-list-container">
     <h2>Danh sách nhắc nhở:</h2>
     <ul id="reminder-list" class="reminder-list">
         <!-- List of reminders will appear here -->
@@ -189,7 +196,6 @@
 
     // Kiểm tra trạng thái đăng nhập
     if (!sessionStorage.getItem('currentUser')) {
-        // Nếu người dùng chưa đăng nhập, chuyển hướng về trang login.html
         window.location.href = 'login.html';
     }
 
@@ -203,40 +209,33 @@
             return;
         }
 
-        // Convert reminder time to milliseconds
         const reminderDate = new Date(reminderTime).getTime();
         const currentTime = new Date().getTime();
 
-        // Check if the selected time is in the future
         if (reminderDate <= currentTime) {
             alert("Vui lòng chọn một thời gian trong tương lai.");
             return;
         }
 
-        // Calculate the time difference in milliseconds
         const timeDifference = reminderDate - currentTime;
 
         if (editIndex === -1) {
-            // Save the reminder in the array if we are adding new reminder
             reminderList.push({
                 note: note,
                 reminderTime: new Date(reminderDate).toLocaleString(),
                 timeDifference: timeDifference
             });
         } else {
-            // Update the reminder if we are editing an existing one
             reminderList[editIndex] = {
                 note: note,
                 reminderTime: new Date(reminderDate).toLocaleString(),
                 timeDifference: timeDifference
             };
-            editIndex = -1; // Reset the edit index after saving
+            editIndex = -1;
         }
 
-        // Display the reminder in the list
         displayReminderList();
 
-        // Set timeout to show reminder alert at the selected time
         setTimeout(() => {
             alert("Đến giờ rồi! Đây là nhắc nhở của bạn: " + note);
         }, timeDifference);
@@ -247,19 +246,16 @@
     // Function to display the list of reminders
     function displayReminderList() {
         const listElement = document.getElementById("reminder-list");
-        listElement.innerHTML = ''; // Clear current list
+        listElement.innerHTML = '';
 
         reminderList.forEach((reminder, index) => {
             const listItem = document.createElement("li");
             listItem.classList.add("reminder-item");
 
             listItem.innerHTML = `
-
                 <strong>Ghi chú:</strong> ${reminder.note} <br>
                 <strong>Thời gian nhắc nhở:</strong> ${reminder.reminderTime}
-
                 <button class="btn edit-btn" onclick="editReminder(${index})">Sửa✏️</button>
-
                 <button class="btn" onclick="deleteReminder(${index})">Xóa🗑️</button>
             `;
 
@@ -267,32 +263,35 @@
         });
     }
 
-    // Function to edit reminder
+    // Function to view the reminder list
+    function viewReminders() {
+        document.getElementById("container").style.display = "none";
+        document.getElementById("reminder-list-container").style.display = "block";
+        displayReminderList(); // Call to display reminders when viewing the list
+    }
+
     function editReminder(index) {
         const reminder = reminderList[index];
         document.getElementById("note").value = reminder.note;
         document.getElementById("reminder-time").value = new Date(reminder.reminderTime).toISOString().slice(0, 16);
-        editIndex = index; // Set the edit index to update this reminder
+        editIndex = index;
         document.getElementById("container").style.display = "block";
         document.getElementById("reminder-list-container").style.display = "none";
     }
 
-    // Function to delete reminder
     function deleteReminder(index) {
-        reminderList.splice(index, 1); // Remove the reminder from the array
-        displayReminderList(); // Re-render the list
+        reminderList.splice(index, 1);
+        displayReminderList();
     }
 
-    // Function to return to the main page
     function returnToMainPage() {
         document.getElementById("container").style.display = "block";
         document.getElementById("reminder-list-container").style.display = "none";
     }
 
-    // Function to log out the user
     function logout() {
-        sessionStorage.removeItem('currentUser'); // Remove the current user session
-        window.location.href = 'login.html'; // Redirect to the login page
+        sessionStorage.removeItem('currentUser');
+        window.location.href = 'login.html';
     }
 </script>
 
